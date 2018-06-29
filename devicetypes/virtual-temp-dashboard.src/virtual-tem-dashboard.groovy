@@ -13,7 +13,7 @@
  */
 metadata {
 	// Automatically generated. Make future change here.
-	definition (name :"vidarga: Virtual Temperature Dashboard", namespace: "vidarga", author: "vidarga") {
+	definition (name :"Virtual Temperature Dashboard", namespace: "vidarga", author: "vidarga") {
 		capability "Temperature Measurement"
 		capability "Sensor"
         
@@ -21,10 +21,10 @@ metadata {
     	attribute "Temp2","number"
     	attribute "Temp3","number"
 
-	    command "changeTemp1", ["number"]
+	command "changeTemp1", ["number"]
     	command "changeTemp2", ["number"]
     	command "changeTemp3", ["number"]
-       command "setTemperature", ["number"]
+        command "setTemperature", ["number"]
 	}
 
 	preferences {
