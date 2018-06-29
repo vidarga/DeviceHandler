@@ -13,7 +13,7 @@
  */
 metadata {
 	// Automatically generated. Make future change here.
-	definition (name :"virtual_Temp_dashboard", namespace: "vidarga", author: "vidarga") {
+	definition (name :"Virtual Temperatur Dashboard", namespace: "vidarga", author: "vidarga") {
 		capability "Temperature Measurement"
 		capability "Sensor"
         
