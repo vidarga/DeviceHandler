@@ -16,15 +16,14 @@ metadata {
 	definition (name :"virtual-temp-dashboard", namespace: "vidarga", author: "vidarga") {
 		capability "Temperature Measurement"
 		capability "Sensor"
-        
-    	attribute "Temp1","number"
-    	attribute "Temp2","number"
-    	attribute "Temp3","number"
+		attribute "Temp1","number"
+		attribute "Temp2","number"
+		attribute "Temp3","number"
 
 		command "changeTemp1", ["number"]
-    	command "changeTemp2", ["number"]
-    	command "changeTemp3", ["number"]
-      	command "setTemperature", ["number"]
+		command "changeTemp2", ["number"]
+		command "changeTemp3", ["number"]
+		command "setTemperature", ["number"]
 	}
 
 	preferences {
