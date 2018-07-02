@@ -12,7 +12,7 @@
  *
  */
 metadata {
-	definition (name: "POPP Z-Wave Smoke Alarm", namespace: "vidarga", author: "vidarga", runLocally: false, minHubCoreVersion: '000.017.0012', executeCommandsLocally: false) {
+	definition (name: "popp-z-wave-smoke-alarm", namespace: "vidarga", author: "vidarga", runLocally: false, minHubCoreVersion: '000.017.0012', executeCommandsLocally: false) {
 		capability "Smoke Detector"
 		capability "Sensor"
 		capability "Battery"
