@@ -14,7 +14,7 @@
  */
  
 metadata {
-	definition (name: "flexit-fan-control", namespace: "vidarga", author: "vidarga") {
+	definition (name: "flexit fan control", namespace: "vidarga", author: "vidarga") {
 		capability "Switch Level"
 		capability "Actuator"
 		capability "Indicator"
