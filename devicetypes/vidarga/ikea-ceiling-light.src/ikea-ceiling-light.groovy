@@ -35,7 +35,7 @@ import groovy.transform.Field
 ]
 
 metadata {
-    definition (name: "ikea-ceiling-light", namespace: "vidarga", author: "vidarga") {
+    definition (name: "ikea ceiling light", namespace: "vidarga", author: "vidarga") {
         capability "HealthCheck"
         capability "Actuator"
         capability "Sensor"
