@@ -73,6 +73,7 @@ def parse(String description) {
 
 def on() {
 	sendEvent(name: "switch", value: "on", isStateChange: true)
+    sleep(1000)
     lowSpeed()
 }
 
