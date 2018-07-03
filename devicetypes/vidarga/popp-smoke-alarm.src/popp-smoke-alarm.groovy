@@ -12,7 +12,7 @@
  *, runLocally: false, minHubCoreVersion: '000.017.0012', executeCommandsLocally: false
  */
 metadata {
-	definition (name: "popp-smoke-alarm", namespace: "vidarga", author: "vidarga") {
+	definition (name: "popp smoke alarm", namespace: "vidarga", author: "vidarga") {
 		capability "Smoke Detector"
 		capability "Sensor"
 		capability "Battery"
