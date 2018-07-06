@@ -24,8 +24,11 @@ metadata {
 		command "lowSpeed"
 		command "medSpeed"
 		command "highSpeed"
+        command "offSpeed"
+		command "humidity"
 
 		attribute "currentState", "string"
+        attribute "humidityCtrl", "string" 
 
 	}
 
@@ -56,25 +59,31 @@ metadata {
         	state "default", label: 'HIGH', action: "highSpeed", icon:"st.Home.home30", backgroundColor: "#ffffff"
 			state "HIGH", label: 'HIGH', action: "highSpeed", icon:"st.Home.home30", backgroundColor: "#d60000"
 		}
-        
+     
+		standardTile("humidity", "device.humidityCtrl", inactiveLabel: false,  width: 6, height: 2, canChangeIcon: true, canChangeBackground: true)  {
+        	state "on", label: 'on', action: "humidity", icon: "https://raw.githubusercontent.com/vidarga/MyDeviceHandler/master/images/Humidity.png", backgroundColor: "#00A0DC"
+    		state "off", label: 'off', action: "humidity", icon: "https://raw.githubusercontent.com/vidarga/MyDeviceHandler/master/images/Humidity.png", backgroundColor: "#e2e2e2"
+		}
+
         preferences {
             input name:"hightimer", type:"number", title: "HIGH mode (in minutes)", description: "Adjust time duration in HIGH mode", range: "*..*", displayDuringSetup: false, defaultValue: "20"
         }        
 
 		main(["switch"])
-		details(["switch", "lowSpeed", "medSpeed", "highSpeed"])
+		details(["switch", "lowSpeed", "medSpeed", "highSpeed", "humidity"])
 	}
 }
 
-
 def parse(String description) {
+	/*def pair = description.split(":")
+    def map = createEvent(name: pair[0].trim(), value: pair[1].trim())
+	def result = [map]
+    return result*/
 }
 
 
 def on() {
 	sendEvent(name: "switch", value: "on", isStateChange: true)
-    sleep(1000)
-    lowSpeed()
 }
 
 def off() {
@@ -96,9 +105,26 @@ def medSpeed() {
     }
 }
 
+def offSpeed() {
+	sendEvent(name: "currentState", value: "OFF" as String)
+}
+
 def highSpeed() {
 	if (device.currentValue("switch") == "on") {
     	sendEvent(name: "currentState", value: "HIGH" as String)
         //log.debug "${device.displayName}: ${device.currentValue}"
     }
+}
+
+def humidity() {
+       if(state.humidityCtrl=="on"){
+        	sendEvent(name:"humidityCtrl", value: "off")
+            state.humidityCtrl="off"
+            //log.debug "humidityCtrl state is $state.humidityCtrl"
+       }
+       else {
+        	sendEvent(name:"humidityCtrl", value: "on")
+            state.humidityCtrl="on"
+            //log.debug "humidityCtrl state is $state.humidityCtrl"
+       }
 }
