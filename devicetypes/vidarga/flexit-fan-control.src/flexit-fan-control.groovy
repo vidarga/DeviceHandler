@@ -89,6 +89,8 @@ def on() {
 def off() {
 	sendEvent(name: "switch", value: "off", isStateChange: true)
     sendEvent(name: "currentState", value: "OFF" as String)
+    state.humidityState="off"
+    sendEvent(name:"humidityCtrl", value: "off")
 }
 
 def lowSpeed() {
@@ -117,14 +119,15 @@ def highSpeed() {
 }
 
 def humidity() {
-       if(state.humidityCtrl=="on"){
+       if(state.humidityState=="on"){
         	sendEvent(name:"humidityCtrl", value: "off")
-            state.humidityCtrl="off"
-            //log.debug "humidityCtrl state is $state.humidityCtrl"
+            state.humidityState="off"
+            //log.debug "humidityCtrl state is ${humidityCtrl}"
        }
        else {
         	sendEvent(name:"humidityCtrl", value: "on")
-            state.humidityCtrl="on"
-            //log.debug "humidityCtrl state is $state.humidityCtrl"
+            state.humidityState="on"
+            //log.debug "humidityCtrl state is $device.currentValue(humidityCtrl)"
+            //log.debug "humidityCtrl state is ${humidityCtrl}"
        }
 }
