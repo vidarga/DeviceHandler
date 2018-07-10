@@ -1,16 +1,10 @@
-/**
- *  Virtual Device to control Multiple relays with webcore
- *
+/*  Virtual Device to control Multiple relays with webcore
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  *  in compliance with the License. You may obtain a copy of the License at:
- *
  *      http://www.apache.org/licenses/LICENSE-2.0
- *
  *  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed
  *  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License
  *  for the specific language governing permissions and limitations under the License.
- *
- *
  */
  
 metadata {
@@ -32,13 +26,11 @@ metadata {
 
 	}
 
-
 	tiles(scale: 2) {
 		multiAttributeTile(name:"switch", type: "lighting", width: 6, height: 4, canChangeIcon: true, canChangeBackground: true){
 			tileAttribute ("device.switch", key: "PRIMARY_CONTROL") {    
 				attributeState "on", action:"switch.off", label:'ON', icon:"st.Lighting.light24", backgroundColor:"#00A0DC", nextState:"turningOff"
-				attributeState "off", action:"switch.on", label:'OFF', icon:"st.Lighting.light24", backgroundColor:"#ffffff", nextState:"turningOn"
-                
+				attributeState "off", action:"switch.on", label:'OFF', icon:"st.Lighting.light24", backgroundColor:"#ffffff", nextState:"turningOn"                
 			}   
 			tileAttribute ("device.currentState", key: "SECONDARY_CONTROL") {
            		attributeState "OFF", label:'Fan speed set to OFF', icon:"st.Lighting.light24"
@@ -64,10 +56,6 @@ metadata {
         	state "on", label: 'on', action: "humidity", icon: "https://raw.githubusercontent.com/vidarga/MyDeviceHandler/master/images/Humidity.png", backgroundColor: "#00A0DC"
     		state "off", label: 'off', action: "humidity", icon: "https://raw.githubusercontent.com/vidarga/MyDeviceHandler/master/images/Humidity.png", backgroundColor: "#e2e2e2"
 		}
-
-        preferences {
-            input name:"hightimer", type:"number", title: "HIGH mode (in minutes)", description: "Adjust time duration in HIGH mode", range: "*..*", displayDuringSetup: false, defaultValue: "20"
-        }        
 
 		main(["switch"])
 		details(["switch", "lowSpeed", "medSpeed", "highSpeed", "humidity"])
@@ -96,14 +84,12 @@ def off() {
 def lowSpeed() {
     if (device.currentValue("switch") == "on") {
         sendEvent(name: "currentState", value: "LOW" as String)
-        //log.debug "${device.displayName}: ${device.currentValue}"
     }
 }
 
 def medSpeed() {
     if (device.currentValue("switch") == "on") {
     	sendEvent(name: "currentState", value: "MED" as String)
-        //log.debug "${device.displayName}: ${device.currentValue}"
     }
 }
 
@@ -114,20 +100,21 @@ def offSpeed() {
 def highSpeed() {
 	if (device.currentValue("switch") == "on") {
     	sendEvent(name: "currentState", value: "HIGH" as String)
-        //log.debug "${device.displayName}: ${device.currentValue}"
     }
 }
 
 def humidity() {
+
        if(state.humidityState=="on"){
         	sendEvent(name:"humidityCtrl", value: "off")
             state.humidityState="off"
-            //log.debug "humidityCtrl state is ${humidityCtrl}"
        }
        else {
         	sendEvent(name:"humidityCtrl", value: "on")
             state.humidityState="on"
-            //log.debug "humidityCtrl state is $device.currentValue(humidityCtrl)"
-            //log.debug "humidityCtrl state is ${humidityCtrl}"
        }
 }
+
+//log.debug "humidityCtrl state is $device.currentValue(humidityCtrl)"
+//log.debug "humidityCtrl state is ${humidityCtrl}"
+//log.debug "${device.displayName}: ${device.currentValue}"
