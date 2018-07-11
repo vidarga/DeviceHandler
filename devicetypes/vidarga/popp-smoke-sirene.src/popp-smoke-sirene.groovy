@@ -12,7 +12,7 @@
  *  Author: Vidarga
  */
 metadata {
-	definition(name: "popp-smoke-sirene", namespace: "vidarga", author: "vidarga", ocfDeviceType: "x.com.st.d.sensor.smoke", runLocally: true, minHubCoreVersion: '000.017.0012', executeCommandsLocally: false) {
+	definition(name: "popp-smoke-sirene", namespace: "vidarga", author: "vidarga", ocfDeviceType: "x.com.st.d.sensor.smoke", minHubCoreVersion: '000.017.0012', executeCommandsLocally: false) {
 		capability "Smoke Detector" //attributes: smoke ("detected","clear","tested")
 		capability "Actuator"
 		capability "Alarm"
