@@ -14,7 +14,7 @@
  *
  */
 metadata {
-	definition (name: "garage-door-opener", namespace: "vidarga", author: "vidarga") {
+	definition (name: "garage door opener", namespace: "vidarga", author: "vidarga") {
 		capability "Actuator"
 		capability "Door Control"
         capability "Garage Door Control"
