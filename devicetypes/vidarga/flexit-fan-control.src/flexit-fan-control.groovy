@@ -14,6 +14,7 @@ metadata {
 		capability "Indicator"
 		capability "Switch"
 		capability "Sensor"
+        capability "Health Check"
 
 		command "lowSpeed"
 		command "medSpeed"
@@ -113,6 +114,24 @@ def humidity() {
         	sendEvent(name:"humidityCtrl", value: "on")
             state.humidityState="on"
        }
+}
+
+def installed() {
+	log.trace "Executing 'installed'"
+	initialize()
+}
+
+def updated() {
+	log.trace "Executing 'updated'"
+	initialize()
+}
+
+private initialize() {
+	log.trace "Executing 'initialize'"
+
+	sendEvent(name: "DeviceWatch-DeviceStatus", value: "online")
+	sendEvent(name: "healthStatus", value: "online")
+	sendEvent(name: "DeviceWatch-Enroll", value: [protocol: "cloud", scheme:"untracked"].encodeAsJson(), displayed: false)
 }
 
 //log.debug "humidityCtrl state is $device.currentValue(humidityCtrl)"
