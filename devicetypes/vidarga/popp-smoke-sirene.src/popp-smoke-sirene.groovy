@@ -22,6 +22,7 @@ metadata {
 		capability "Sensor"
 		capability "Switch"
 		capability "Health Check"
+        attribute "alarmState", "string"
 
 		fingerprint type:"0701", mfr:"0154", prod:"0100", model:"0201", ver:"2.01", zwv:"4.05", lib:"06", cc:"5E,20,25,30,71,70,85,80,5A,59,73,86,72", ccOut:"20", role:"07", ff:"8C01", ui:"8C01", deviceJoinName: "POPP Smoke Detector and Alarm Sirene"
 
@@ -62,7 +63,7 @@ metadata {
 			state "default", label: '', action: "refresh.refresh", icon: "st.secondary.refresh"
 		}
 
-		main "alarm"
+		main "smoke"
 		details(["smoke", "alarm", "off", "battery", "refresh"])
 	}
 }
@@ -82,24 +83,29 @@ def updated() {
 
 def initialize() {
 	def cmds = []
-
+	//createSmokeEvents("allClear", cmds) // allClear to set inital states for smoke and CO
 	// Set a limit to the number of times that we run so that we don't run forever and ever
 	if (!state.initializeCount) {
 		state.initializeCount = 1
+        log.debug "state.initializeCount state is ${state.initializeCount}"
 	} else if (state.initializeCount <= 10) { // Keep checking for ~2 mins (10 * 12 sec intervals)
 		state.initializeCount = state.initializeCount + 1
+        log.debug "state.initializeCount state is ${state.initializeCount}"
 	} else {
 		state.initializeCount = 0
+        log.debug "state.initializeCount state is ${state.initializeCount}"
 		return // TODO: This might be a good opprotunity to mark the device unhealthy
 	}
 
 	if (!device.currentState("alarm")) {
+    	log.debug "CurrentState alarm is ${device.currentState("alarm")}"
 		cmds << zwave.basicV1.basicGet().format()
 		cmds << "delay 5"
 	}
 	
 	if (!device.currentState("battery")) {
 		if (zwaveInfo?.cc?.contains("80")) {
+        	log.debug "CurrentState Battery is ${device.currentState("battery")}"
 			cmds << zwave.batteryV1.batteryGet().format()
 		} else {
 			// Right now this DTH assumes all devices are battery powered, in the event a device is wall powered we should populate something
@@ -107,11 +113,9 @@ def initialize() {
 		}
 	}
 	
-	createSmokeEvents("allClear", cmds) // allClear to set inital states for smoke and CO
-	
 	if (cmds.size()) {
-		sendHubCommand(cmds)
-
+    	log.debug "CMD size is ${cmds.size()}"
+        sendHubCommand(cmds)
 		runIn(12, "initialize", [overwrite: true, forceForLocallyExecuting: true])
 	} else {
 		state.initializeCount = 0
@@ -261,6 +265,7 @@ def createEvents(physicalgraph.zwave.Command cmd) {
 }
 
 def createEvents(physicalgraph.zwave.commands.alarmv2.AlarmReport cmd, results) {
+	log.debug cmd
 	if (cmd.zwaveAlarmType == physicalgraph.zwave.commands.alarmv2.AlarmReport.ZWAVE_ALARM_TYPE_SMOKE) {
 		if (cmd.zwaveAlarmEvent == 3) {
 			createSmokeEvents("tested", results)

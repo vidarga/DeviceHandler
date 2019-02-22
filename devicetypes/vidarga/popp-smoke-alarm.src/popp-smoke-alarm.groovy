@@ -17,6 +17,8 @@ metadata {
 		capability "Sensor"
 		capability "Battery"
 		capability "Health Check"
+        capability "Alarm"
+        capability "Refresh"
 
 		attribute "alarmState", "string"
 		//zw:F type:0701 mfr:0154 prod:0100 model:0201 ver:2.01 zwv:4.05 lib:06 cc:5E,20,25,30,71,70,85,80,5A,59,73,86,72 ccOut:20 role:07 ff:8C01 ui:8C01
@@ -51,9 +53,12 @@ metadata {
 		valueTile("battery", "device.battery", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
 			state "battery", label:'${currentValue}% battery', unit:""
 		}
+        standardTile("refresh", "device.refresh", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
+			state "default", label: '', action: "refresh.refresh", icon: "st.secondary.refresh"
+		}
 
 		main "smoke"
-		details(["smoke", "battery"])
+		details(["smoke", "battery", "refresh"])
 	}
 }
 
@@ -69,6 +74,7 @@ def installed() {
 def updated() {
 // Device checks in every hour, this interval allows us to miss one check-in notification before marking offline
 	sendEvent(name: "checkInterval", value: 2 * 60 * 60 + 2 * 60, displayed: false, data: [protocol: "zwave", hubHardwareId: device.hub.hardwareID])
+
 }
 
 def parse(String description) {
@@ -83,6 +89,22 @@ def parse(String description) {
 	}
 	log.debug "'$description' parsed to ${results.inspect()}"
 	return results
+}
+
+def refresh() {
+	log.debug "sending battery refresh command"
+	[
+		zwave.basicV1.basicGet().format(),
+		zwave.batteryV1.batteryGet().format()
+	]
+}
+
+/**
+ * PING is used by Device-Watch in attempt to reach the Device
+ * */
+def ping() {
+	log.debug "ping() called"
+	refresh()
 }
 
 def createSmokeEvents(name, results) {
