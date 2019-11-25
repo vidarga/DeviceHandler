@@ -8,7 +8,7 @@
  */
  
 metadata {
-	definition (name: "flexit fan control", namespace: "vidarga", author: "vidarga") {
+	definition (name: "flexit fan control", namespace: "vidarga", author: "vidarga",  executeCommandsLocally: false, mnmn: "SmartThings", vid: "generic-contact-2") {
 		capability "Switch Level"
 		capability "Actuator"
 		capability "Indicator"
